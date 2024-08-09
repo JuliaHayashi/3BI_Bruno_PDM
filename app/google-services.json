@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "530222768461",
+    "project_id": "bruno-66a46",
+    "storage_bucket": "bruno-66a46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530222768461:android:61b95e0b0aeb17fb41d704",
+        "android_client_info": {
+          "package_name": "com.example.a3bi_bruno_pdm_vers1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDufP6nEpCm3S1rTh5UVOe_zar31izT1As"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530222768461:android:1321e71499287aaa41d704",
+        "android_client_info": {
+          "package_name": "com.example.a3bi_bruno_ver1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDufP6nEpCm3S1rTh5UVOe_zar31izT1As"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
