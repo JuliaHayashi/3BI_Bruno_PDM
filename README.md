@@ -1,3 +1,4 @@
 Preview
-[Galeria_App.zip](https://github.com/user-attachments/files/16592795/Galeria_App.zip)
+https://github.com/user-attachments/assets/1ff878d5-c031-4097-95d7-15db6afc86b0 
+
 
