@@ -16,6 +16,7 @@ import com.google.firebase.storage.ktx.storage
 class MainActivity2 : AppCompatActivity() {
     private lateinit var selectImageButton: Button
     private lateinit var uploadImageButton: Button
+    private lateinit var activity3: Button
     private lateinit var imageView: ImageView
     private var imageUri: Uri? = null
     private lateinit var storage: FirebaseStorage
@@ -27,12 +28,13 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        // Inicialize o Firebase Storage
+        // Initialize Firebase Storage
         storage = Firebase.storage
 
         selectImageButton = findViewById(R.id.select_image_button)
         uploadImageButton = findViewById(R.id.upload_image_button)
         imageView = findViewById(R.id.image_view)
+        activity3 = findViewById(R.id.activity3)
 
         selectImageButton.setOnClickListener {
             openFileChooser()
@@ -45,7 +47,13 @@ class MainActivity2 : AppCompatActivity() {
                 Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
             }
         }
+
+        activity3.setOnClickListener {
+            val intent = Intent(this, MainActivity3::class.java)
+            startActivity(intent)
+        }
     }
+
 
     private fun openFileChooser() {
         val intent = Intent().apply {
