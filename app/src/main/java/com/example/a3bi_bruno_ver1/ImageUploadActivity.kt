@@ -80,12 +80,12 @@ class ImageUploadActivity : AppCompatActivity() {
         uploadTask.addOnSuccessListener { taskSnapshot ->
             //Pega o URL
             imageRef.downloadUrl.addOnSuccessListener { uri ->
-                Log.d("Firebase", "Image upload successful. Download URL: $uri")
-                Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show()
+                Log.d("Firebase", "Upload de imagem bem-sucedido. Download URL: $uri")
+                Toast.makeText(this, "Upload bem-sucedido!!!", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { exception ->
-            Log.e("Firebase", "Image upload failed", exception)
-            Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
+            Log.e("Firebase", "Upload de imagem falhou!!!", exception)
+            Toast.makeText(this, "Upload falhou!!!", Toast.LENGTH_SHORT).show()
         }
     }
 
