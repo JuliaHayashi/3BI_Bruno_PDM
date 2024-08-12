@@ -11,7 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
-class MainActivity3 : AppCompatActivity() {
+class GalleryActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
@@ -20,12 +20,12 @@ class MainActivity3 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main3)
+        setContentView(R.layout.activity_gallery)
 
         recyclerView = findViewById(R.id.recycler_view)
         storage = Firebase.storage
 
-        // Configurar RecyclerView
+        //RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         imageAdapter = ImageAdapter(this, imageLinks)
         recyclerView.adapter = imageAdapter

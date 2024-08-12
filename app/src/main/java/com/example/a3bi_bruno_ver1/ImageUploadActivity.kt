@@ -13,10 +13,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
-class MainActivity2 : AppCompatActivity() {
+class ImageUploadActivity : AppCompatActivity() {
     private lateinit var selectImageButton: Button
     private lateinit var uploadImageButton: Button
-    private lateinit var activity3: Button
+    private lateinit var gallery_activity: Button
     private lateinit var imageView: ImageView
     private var imageUri: Uri? = null
     private lateinit var storage: FirebaseStorage
@@ -27,14 +27,14 @@ class MainActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+        setContentView(R.layout.activity_image_upload)
         // Initialize Firebase Storage
         storage = Firebase.storage
 
         selectImageButton = findViewById(R.id.select_image_button)
         uploadImageButton = findViewById(R.id.upload_image_button)
         imageView = findViewById(R.id.image_view)
-        activity3 = findViewById(R.id.activity3)
+        gallery_activity = findViewById(R.id.gallery_activity)
 
         selectImageButton.setOnClickListener {
             openFileChooser()
@@ -44,16 +44,15 @@ class MainActivity2 : AppCompatActivity() {
             imageUri?.let { uri ->
                 uploadImageToFirebase(uri)
             } ?: run {
-                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nenhuma imagem selecionada!!!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        activity3.setOnClickListener {
-            val intent = Intent(this, MainActivity3::class.java)
+        gallery_activity.setOnClickListener {
+            val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
         }
     }
-
 
     private fun openFileChooser() {
         val intent = Intent().apply {
@@ -75,8 +74,11 @@ class MainActivity2 : AppCompatActivity() {
         val storageRef = storage.reference
         val imageRef = storageRef.child("images/${fileUri.lastPathSegment}")
 
+        //upload do arquivo
         val uploadTask = imageRef.putFile(fileUri)
+
         uploadTask.addOnSuccessListener { taskSnapshot ->
+            //Pega o URL
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 Log.d("Firebase", "Image upload successful. Download URL: $uri")
                 Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show()
@@ -86,4 +88,5 @@ class MainActivity2 : AppCompatActivity() {
             Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

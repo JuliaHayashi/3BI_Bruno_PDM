@@ -9,8 +9,7 @@ import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
-
-class MainActivity : AppCompatActivity() {
+class AuthActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var registerButton: Button
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_auth)
 
         // Inicializa o Firebase
         FirebaseApp.initializeApp(this)
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 loginWithFirebase(email, password)
             } else {
-                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Preencha todos os campos!!!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -54,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val intent = Intent(this, MainActivity2::class.java)
+                    val intent = Intent(this, ImageUploadActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Email ou senha incorreto!!!", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
@@ -66,35 +65,28 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    //Função para registrar novo usuario
     fun register(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Registro bem-sucedido
                     val user = auth.currentUser
                     Toast.makeText(this, "Registrado com sucesso: ${user?.email}", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Falha no registro
                     Toast.makeText(this, "Erro ao registrar: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
-
-    //Login de usuários existentes
 
     fun login(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Login bem-sucedido
                     val user = auth.currentUser
                     Toast.makeText(this, "Logado com sucesso: ${user?.email}",
                         Toast.LENGTH_SHORT).show()
                 } else {
-                    // Falha no login
                     Toast.makeText(this, "Erro ao logar: ${task.exception?.message}",
                         Toast.LENGTH_SHORT).show()
                 }

@@ -15,7 +15,7 @@ class ImageAdapter(private val context: Context, private val images: List<String
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_image, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_gallery, parent, false)
         return ImageViewHolder(view)
     }
 

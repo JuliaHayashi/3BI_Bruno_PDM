@@ -5,40 +5,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    android:padding="16dp"
+    tools:context=".ImageUploadActivity">
 
     <Button
         android:id="@+id/select_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Image"
+        android:textSize="16sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="80dp" />
+
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_below="@id/select_image_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:scaleType="centerCrop" />
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"/>
 
     <Button
         android:id="@+id/upload_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload Image"
+        android:textSize="16sp"
         android:layout_below="@id/image_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
     <Button
-        android:id="@+id/activity3"
-        android:layout_width="127dp"
+        android:id="@+id/gallery_activity"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Galeria"
+        android:textSize="16sp"
         android:layout_below="@id/upload_image_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="59dp"
-        android:text="Images" />
+        android:layout_marginTop="30dp" />
 
 </RelativeLayout>
