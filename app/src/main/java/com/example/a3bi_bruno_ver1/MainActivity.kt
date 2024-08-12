@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
-    //---------------------------Váriaveis Globais
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var registerButton: Button
@@ -23,8 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         // Inicializa o Firebase
         FirebaseApp.initializeApp(this)
-
-
 
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
@@ -67,9 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-
-    //------------------------------------------------------------Função para registrar novo usuario
-
+    //Função para registrar novo usuario
     fun register(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
@@ -85,9 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    //----------------------------------------------------------------------------------------------
-
-    //--------------------------------------------------Login de usuários existentes
+    //Login de usuários existentes
 
     fun login(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
@@ -105,9 +98,4 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-//--------------------------------------------------------------------------------------------------
-
-
-
-
 }

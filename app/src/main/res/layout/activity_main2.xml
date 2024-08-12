@@ -32,4 +32,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
 
+    <Button
+        android:id="@+id/activity3"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upload_image_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:text="Images" />
+
 </RelativeLayout>

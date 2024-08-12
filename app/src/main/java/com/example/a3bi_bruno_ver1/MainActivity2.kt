@@ -34,8 +34,6 @@ class MainActivity2 : AppCompatActivity() {
         uploadImageButton = findViewById(R.id.upload_image_button)
         imageView = findViewById(R.id.image_view)
 
-
-
         selectImageButton.setOnClickListener {
             openFileChooser()
         }
@@ -48,7 +46,6 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
     }
-
 
     private fun openFileChooser() {
         val intent = Intent().apply {
@@ -66,7 +63,6 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
-
     private fun uploadImageToFirebase(fileUri: Uri) {
         val storageRef = storage.reference
         val imageRef = storageRef.child("images/${fileUri.lastPathSegment}")
@@ -82,5 +78,4 @@ class MainActivity2 : AppCompatActivity() {
             Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
