@@ -11,6 +11,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
+//Galeria de imagens armazenadas no Firebase Storage
+//RecyclerView e ImageAdapter para exibir a lista de imagens
 class GalleryActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -27,6 +29,7 @@ class GalleryActivity : AppCompatActivity() {
 
         //RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
+        //adaptar no RecyclerView a lista de URLs
         imageAdapter = ImageAdapter(this, imageLinks)
         recyclerView.adapter = imageAdapter
 

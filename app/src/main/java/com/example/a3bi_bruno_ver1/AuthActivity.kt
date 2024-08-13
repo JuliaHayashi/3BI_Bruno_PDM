@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
+//Registro e login de usuários via email e senha com o Firebase Authentication
 class AuthActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -47,12 +48,14 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
+    //Autentica o usuário com o Firebase usando email e senha
     private fun loginWithFirebase(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    //redireciona para activity
                     val intent = Intent(this, ImageUploadActivity::class.java)
                     startActivity(intent)
                     finish()

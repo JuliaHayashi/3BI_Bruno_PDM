@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
+//Selecionar e fazer upload de imagens para o Firebase Storage
 class ImageUploadActivity : AppCompatActivity() {
     private lateinit var selectImageButton: Button
     private lateinit var uploadImageButton: Button
