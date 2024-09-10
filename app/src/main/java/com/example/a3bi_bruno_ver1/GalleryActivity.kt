@@ -1,24 +1,24 @@
 package com.example.a3bi_bruno_ver1
 
-import ImageAdapter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
-//Galeria de imagens armazenadas no Firebase Storage
-//RecyclerView e ImageAdapter para exibir a lista de imagens
 class GalleryActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
     private val imageLinks = mutableListOf<String>()
     private lateinit var storage: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +26,29 @@ class GalleryActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycler_view)
         storage = Firebase.storage
+        auth = Firebase.auth
 
-        //RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        //adaptar no RecyclerView a lista de URLs
         imageAdapter = ImageAdapter(this, imageLinks)
         recyclerView.adapter = imageAdapter
 
-        // Carregar imagens do Firebase Storage
         loadImagesFromFirebase()
     }
 
     private fun loadImagesFromFirebase() {
-        val storageRef = storage.reference.child("images/")
+        val userId = auth.currentUser?.uid ?: run {
+            Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val storageRef = storage.reference.child("images/$userId/")
         storageRef.listAll().addOnSuccessListener { result ->
             imageLinks.clear()
             val downloadUrls = mutableListOf<String>()
+            if (result.items.isEmpty()) {
+                Toast.makeText(this, "No images found", Toast.LENGTH_SHORT).show()
+                return@addOnSuccessListener
+            }
             for (fileRef in result.items) {
                 fileRef.downloadUrl.addOnSuccessListener { uri ->
                     downloadUrls.add(uri.toString())

@@ -9,85 +9,121 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
-//Selecionar e fazer upload de imagens para o Firebase Storage
 class ImageUploadActivity : AppCompatActivity() {
-    private lateinit var selectImageButton: Button
-    private lateinit var uploadImageButton: Button
-    private lateinit var gallery_activity: Button
+    private lateinit var selectFileButton: Button
+    private lateinit var uploadFileButton: Button
+    private lateinit var galleryActivity: Button
+    private lateinit var logoutButton: Button
     private lateinit var imageView: ImageView
-    private var imageUri: Uri? = null
+    private var fileUri: Uri? = null
     private lateinit var storage: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
+        private const val PICK_FILE_REQUEST = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_upload)
-        // Initialize Firebase Storage
+
         storage = Firebase.storage
+        auth = Firebase.auth
 
-        selectImageButton = findViewById(R.id.select_image_button)
-        uploadImageButton = findViewById(R.id.upload_image_button)
-        imageView = findViewById(R.id.image_view)
-        gallery_activity = findViewById(R.id.gallery_activity)
+        selectFileButton = findViewById(R.id.select_file_button)
+        uploadFileButton = findViewById(R.id.upload_file_button)
+        imageView = findViewById(R.id.file_preview)
+        galleryActivity = findViewById(R.id.gallery_activity)
+        logoutButton = findViewById(R.id.logout_button)
 
-        selectImageButton.setOnClickListener {
+        selectFileButton.setOnClickListener {
             openFileChooser()
         }
 
-        uploadImageButton.setOnClickListener {
-            imageUri?.let { uri ->
-                uploadImageToFirebase(uri)
+        uploadFileButton.setOnClickListener {
+            fileUri?.let { uri ->
+                uploadFileToFirebase(uri)
             } ?: run {
-                Toast.makeText(this, "Nenhuma imagem selecionada!!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nenhum arquivo selecionado!!!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        gallery_activity.setOnClickListener {
+        galleryActivity.setOnClickListener {
             val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
+        }
+
+        logoutButton.setOnClickListener {
+            logout()
         }
     }
 
     private fun openFileChooser() {
         val intent = Intent().apply {
-            type = "image/*"
+            type = "*/*"
             action = Intent.ACTION_GET_CONTENT
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/*", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
         }
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, PICK_FILE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            imageUri = data.data
-            imageView.setImageURI(imageUri)
+        if (requestCode == PICK_FILE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            fileUri = data.data
+            val mimeType = contentResolver.getType(fileUri!!)
+
+            if (mimeType?.startsWith("image/") == true) {
+                imageView.setImageURI(fileUri)
+            } else {
+                imageView.setImageResource(R.drawable.baseline_wysiwyg_24)
+            }
         }
     }
 
-    private fun uploadImageToFirebase(fileUri: Uri) {
-        val storageRef = storage.reference
-        val imageRef = storageRef.child("images/${fileUri.lastPathSegment}")
+    private fun uploadFileToFirebase(fileUri: Uri) {
+        val userId = auth.currentUser?.uid ?: run {
+            Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        //upload do arquivo
-        val uploadTask = imageRef.putFile(fileUri)
+        val storageRef = storage.reference.child("images/$userId/")
+        val mimeType = contentResolver.getType(fileUri)
+        val fileExtension = when (mimeType) {
+            "image/jpeg" -> ".jpg"
+            "image/png" -> ".png"
+            "application/pdf" -> ".pdf"
+            "application/msword" -> ".doc"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> ".docx"
+            else -> ""
+        }
+
+        val fileRef = storageRef.child("${System.currentTimeMillis()}$fileExtension")
+
+        val uploadTask = fileRef.putFile(fileUri)
 
         uploadTask.addOnSuccessListener { taskSnapshot ->
-            //Pega o URL
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                Log.d("Firebase", "Upload de imagem bem-sucedido. Download URL: $uri")
+            fileRef.downloadUrl.addOnSuccessListener { uri ->
+                Log.d("Firebase", "Upload de arquivo bem-sucedido. Download URL: $uri")
                 Toast.makeText(this, "Upload bem-sucedido!!!", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { exception ->
-            Log.e("Firebase", "Upload de imagem falhou!!!", exception)
+            Log.e("Firebase", "Upload de arquivo falhou!!!", exception)
             Toast.makeText(this, "Upload falhou!!!", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun logout() {
+        auth.signOut()
+        Toast.makeText(this, "Logout bem-sucedido", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, AuthActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
